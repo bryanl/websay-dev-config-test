@@ -1,0 +1,35 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: websay-dev
+spec:
+  virtualhost:
+    fqdn: websay.dev.tgik116.bryanl.dev
+    tls:
+      secretName: websay-dev
+  routes:
+    - services:
+      - name: websay-dev
+        port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+  name: websay-dev
+spec:
+  rules:
+  - host: websay.dev.tgik116.bryanl.dev
+    http:
+      paths:
+      - backend:
+          serviceName: websay-dev
+          servicePort: 80
+  tls:
+  - hosts:
+    - websay.dev.tgik116.bryanl.dev
+    secretName: websay-dev
