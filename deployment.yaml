@@ -21,4 +21,9 @@ spec:
       - image: bryanl/websay
         name: websay
         resources: {}
+        args:
+        - -bg-color
+        - red
+        - -fg-color
+        - white
 status: {}
